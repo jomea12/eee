@@ -45,9 +45,6 @@ client.chat.completions.create(
 
 print("Start Up Complete")
 
-engine.say("Start Up Complete")
-engine.runAndWait()
-
 print("Start Up Complete")
 
 def process_text(text):
@@ -97,7 +94,7 @@ def listen(again):
         elif again == False:
             t = 0
 
-        if keyboard.is_pressed('enter') and t <= 0:
+        if st.button("STOP", type = "secondary") and t <= 0:
             stream.stop_stream()
             stream.close()
             audio.terminate()
@@ -124,23 +121,24 @@ def listen(again):
             print(process_text(r.recognize_google(audio)))
 
             listen(True)
-        elif keyboard.is_pressed('enter') and t > 0:
-            print("early stop")
-            time.sleep(0.5)
-            t = 2
-            break
+        # elif keyboard.is_pressed('enter') and t > 0:
+        #     print("early stop")
+        #     time.sleep(0.5)
+        #     t = 2
+        #     break
 
-while True:
-    #print("main loop")
+#while True:
+#print("main loop")
+stop = False
+if st.button("START", type="secondary"):
     stop = False
-    if keyboard.is_pressed('enter'):
-        try:
-            listen(False)
-        except sr.UnknownValueError:
-            engine.say("Could not understand audio")
-            engine.runAndWait()
-        except sr.RequestError as e:
-            engine.say("Could not connect to the internet")
-            engine.runAndWait()
-        except:
-            pass
+    try:
+        listen(False)
+    except sr.UnknownValueError:
+        engine.say("Could not understand audio")
+        engine.runAndWait()
+    except sr.RequestError as e:
+        engine.say("Could not connect to the internet")
+        engine.runAndWait()
+    except:
+        pass
